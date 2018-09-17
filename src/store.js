@@ -103,7 +103,7 @@ const getDefaultState = () => {
       [
         { codigo: 11, asignatura: 'FUNDAMENTOS DE PROGRAMACIÓN', calificacion: '', creditos: 3, asim: 167250},
         { codigo: 1, asignatura: 'CÁLCULO DIFERENCIAL', calificacion: '', creditos: 3, asim: 157005},
-        { codigo: 42, asignatura: 'EDUCACIÓN HAMBIENTAL', calificacion: '', creditos: 2, asim: 164004},
+        { codigo: 42, asignatura: 'EDUCACIÓN AMBIENTAL', calificacion: '', creditos: 2, asim: 164004},
         { codigo: 12, asignatura: 'GESTIÓN DE PROYECTOS', calificacion: '', creditos: 3, asim: 168106},
         { codigo: 43, asignatura: 'FORMACIÓN CIUDADANA Y CULTURA DE PAZ', calificacion: '', creditos: 1, asim: 369006},
         { codigo: 44, asignatura: 'ELECTIVA SOCIOHUMANISTICA I', calificacion: '', creditos: 2, asim: 150001},
@@ -267,7 +267,7 @@ export default new Vuex.Store({
       [
         { codigo: 11, asignatura: 'FUNDAMENTOS DE PROGRAMACIÓN', calificacion: '', creditos: 3, asim: 167250},
         { codigo: 1, asignatura: 'CÁLCULO DIFERENCIAL', calificacion: '', creditos: 3, asim: 157005},
-        { codigo: 42, asignatura: 'EDUCACIÓN HAMBIENTAL', calificacion: '', creditos: 2, asim: 164004},
+        { codigo: 42, asignatura: 'EDUCACIÓN AMBIENTAL', calificacion: '', creditos: 2, asim: 164004},
         { codigo: 12, asignatura: 'GESTIÓN DE PROYECTOS', calificacion: '', creditos: 3, asim: 168106},
         { codigo: 43, asignatura: 'FORMACIÓN CIUDADANA Y CULTURA DE PAZ', calificacion: '', creditos: 1, asim: 369006},
         { codigo: 44, asignatura: 'ELECTIVA SOCIOHUMANISTICA I', calificacion: '', creditos: 2, asim: 150001},

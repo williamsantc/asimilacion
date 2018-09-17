@@ -11,7 +11,7 @@
               <h6>Periodo {{index + 1}}</h6>
               <b-table striped hover :items="item" :fields="fields" small responsive fixed>
                 <template slot="calificacion" slot-scope="data"> 
-                  <b-input v-model="data.item.calificacion" type="number"></b-input>
+                  <b-input v-model="data.item.calificacion" type="number" max="5" min="0"></b-input>
                 </template>
               </b-table>
             </div>
