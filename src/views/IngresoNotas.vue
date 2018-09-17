@@ -91,7 +91,6 @@ export default {
       this.$router.push('resultados')
     },
     validarSoloNumeros(event) {
-      alert(JSON.stringify(event))
       if(parseInt(event.key) + '' === 'NaN' 
           && event.which !== 8 
           && event.which !== 9
