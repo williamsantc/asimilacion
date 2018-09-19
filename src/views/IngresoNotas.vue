@@ -11,7 +11,7 @@
               <h6>Periodo {{index + 1}}</h6>
               <b-table striped hover :items="item" :fields="fields" small responsive fixed>
                 <template slot="calificacion" slot-scope="data"> 
-                  <b-input v-model="data.item.calificacion" type="number" max="5" min="0"></b-input>
+                  <b-input v-model="data.item.calificacion" type="number" :ref="data.item.codigo" max="5" min="0"></b-input>
                 </template>
               </b-table>
             </div>
@@ -22,7 +22,7 @@
               
             </b-col>
             <b-col cols="6" class="text-right">
-              <b-button variant="primary" @click="modalShow = !modalShow">Continuar <i class="fa fa-angle-right" aria-hidden="true"></i></b-button>
+              <b-button variant="primary" @click="siguiente">Continuar <i class="fa fa-angle-right" aria-hidden="true"></i></b-button>
             </b-col>
           </b-row>
         </b-card>
@@ -78,6 +78,23 @@ export default {
   },
   methods: {
     siguiente: function () {
+      let contCalificaciones = 0
+      for (let i in this.$store.getters.pensum2006) {
+        for(let j in this.$store.getters.pensum2006[i]) {
+          if(this.$store.getters.pensum2006[i][j].calificacion && this.$store.getters.pensum2006[i][j].calificacion > 5) {
+            this.$refs[this.$store.getters.pensum2006[i][j].codigo][0].focus()
+            this.$toastr.error('La calificación debe ser igual o inferior a 5.0', 'Número inválido')
+            return
+          } else if (this.$store.getters.pensum2006[i][j].calificacion) {
+            contCalificaciones++
+          }
+        }
+      }
+      if (contCalificaciones === 0) {
+        this.$toastr.error('Debe ingresar al menos una calificación', 'Calificaciones no ingresadas')
+        return
+      }
+      /*
       if (!this.libreEleccion) {
         this.$toastr.error('Debe ingresar un número', 'Campo vacío')
         return
@@ -88,6 +105,7 @@ export default {
         this.$toastr.error('El número máximo de créditos es 17', 'Número inválido')
         return
       }
+      */
       this.$router.push('resultados')
     },
     validarSoloNumeros(event) {
@@ -116,6 +134,7 @@ export default {
     }
   },
   beforeCreate: function () {
+    this.$store.dispatch('changeLibre', 17)
     if (!this.$store.getters.logged) {
       this.$router.push('/pages/login')
       return

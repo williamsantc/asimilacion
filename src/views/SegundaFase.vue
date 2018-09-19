@@ -1,5 +1,15 @@
 <template>
   <div class="animated fadeIn">
+    <b-card>
+      <b-row>
+        <b-col cols="6">
+          <b-button @click="$router.push('/ingreso_notas')" :disabled="(this.$store.getters.userLogged.documento ? true : false)"><i class="fa fa-angle-left" aria-hidden="true"></i> Volver</b-button>
+        </b-col>
+        <b-col cols="6" class="text-right">
+          <b-button variant="primary" @click="abrirFinalizar" :disabled="(this.$store.getters.userLogged.documento ? true : false)"><i class="fa fa-check" aria-hidden="true"></i> Finalizar</b-button>
+        </b-col>
+      </b-row>
+    </b-card>
     <b-row class="justify-content-md-center">
       <b-col md="6">
         <b-card>
@@ -67,16 +77,30 @@
           <p><b>Estos valores son una representación POSIBLE de como quedaría usted ubicado en el programa ante la POSIBLE asimilación</b></p>
         </b-card>
       </b-col>
-      <b-col md="8">
+      <b-col md="6">
         <b-card>
           <h4 slot="header">Asignaturas seleccionadas como libre elección</h4>
+            <h4 v-if="libreEleccion.length === 0">No hay asignaturas de libre elección</h4>
+            <div v-else>
+              <b-table striped hover :items="libreEleccion" :fields="fields2" responsive small >
+                <template slot="calificacion" slot-scope="data"> 
+                  <b-input v-model="data.item.calificacion" disabled></b-input>
+                </template>
+              </b-table>
+              <p><b>TOTAL: </b> {{$store.getters.pensum2018[8][4].creditos}} de 17 créditos</p>
+            </div>
+        </b-card>
+      </b-col>
+      <b-col md="6">
+        <b-card>
+          <h4 slot="header">Asignaturas no asimiladas</h4>
           
-            <b-table striped hover :items="libreEleccion" :fields="fields2" responsive small >
+            <h4 v-if="noAsimiladas.length === 0">No hay asignaturas sin asimilar</h4>
+            <b-table v-else striped hover :items="noAsimiladas" :fields="fields2" responsive small >
               <template slot="calificacion" slot-scope="data"> 
                 <b-input v-model="data.item.calificacion" disabled></b-input>
               </template>
             </b-table>
-            <p><b>TOTAL: </b> {{$store.getters.pensum2018[8][4].creditos}} de 17 créditos</p>
         </b-card>
       </b-col>
       <b-col md="6">
@@ -145,6 +169,7 @@ export default {
     return {
       decisionEstudiante: 'SI',
       sobrantes: [],
+      noAsimiladas: [],
       libreEleccion: [],
       datosPensum2006: {},
       modalShow: false,
@@ -285,6 +310,21 @@ export default {
 
       return sum
     },
+    cargarNoAsimiladas: function () {
+      let encontrada = false
+      for(let i in this.sobrantes) {
+        for(let j in this.libreEleccion) {
+          if(this.sobrantes[i].codigo === this.libreEleccion[j].codigo) {
+            encontrada = true
+            break
+          }
+        }
+        if(!encontrada) {
+          this.noAsimiladas.push(this.sobrantes[i])
+        }
+        encontrada = false
+      }
+    },
     calcularDatos2018: function () {
       let sumCalifLibre = 0
       for (let i in this.libreEleccion) {
@@ -357,6 +397,7 @@ export default {
     this.datosPensum2006 = this.calcularDatos2006()
     this.llenarSobrantes()
     this.$store.getters.pensum2018[8][4].creditos = this.libreEleccionInteligente()
+    this.cargarNoAsimiladas()
     this.$store.dispatch('changeLibre', this.$store.getters.pensum2018[8][4].creditos)
     this.datosPensum2018 = this.calcularDatos2018()
     this.$store.getters.pensum2018[8][4].calificacion = this.$store.getters.pensum2018[8][4].calificacion.toFixed(2)

@@ -116,6 +116,20 @@ export default {
       
   },
   created: function () {
+    let sum = 0
+    db.collection('users').get()
+      .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            console.log(doc.data())
+            sum++
+          })
+      })
+      .catch((err) => {
+        console.log('Error getting documents', err)
+      }).then(() => {
+        console.log(sum)
+      })
+      
     if(this.$store.getters.userLogged) {
       this.$router.push('/ingreso_notas')
     }

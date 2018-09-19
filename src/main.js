@@ -36,6 +36,14 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
 
 export const db = firebase.firestore()
 
+router.beforeEach((to, from, next) => {
+  if (!to.matched.length) {
+  	next('/pages/404')
+  } else {
+  	next();
+  }
+})
+
 // todo
 // cssVars()
 
