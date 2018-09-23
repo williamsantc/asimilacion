@@ -162,6 +162,8 @@
 
 <script>
 import { db } from '../main'
+import jsPDF from 'jspdf'
+import autotable from 'jspdf-autotable'
 
 export default {
   name: 'SegundaFase',
@@ -384,7 +386,7 @@ export default {
         db.collection('pensum2018').doc(perUser.user + '_' + perUser.periodo).set(perUser)
       }
       this.$store.dispatch('cerrarSesion')
-      this.$toastr.success('Registro exitoso', 'Sus datos fueron almacenados')
+      this.$toastr.success('Sus datos fueron almacenados', 'Registro exitoso')
       this.$router.push('/pages/login')
     }
   },
@@ -395,11 +397,13 @@ export default {
   },
   created: function () {
     this.datosPensum2006 = this.calcularDatos2006()
+    this.$store.getters.dataFinal[2006] = this.datosPensum2006
     this.llenarSobrantes()
     this.$store.getters.pensum2018[8][4].creditos = this.libreEleccionInteligente()
     this.cargarNoAsimiladas()
     this.$store.dispatch('changeLibre', this.$store.getters.pensum2018[8][4].creditos)
     this.datosPensum2018 = this.calcularDatos2018()
+    this.$store.getters.dataFinal[2018] = this.datosPensum2018
     this.$store.getters.pensum2018[8][4].calificacion = this.$store.getters.pensum2018[8][4].calificacion.toFixed(2)
 
   }

@@ -65,6 +65,9 @@ const IngresoNotas = () => import('@/views/IngresoNotas.vue')
 
 // Vista Segunda fase
 const SegundaFase = () => import('@/views/SegundaFase.vue')
+
+//Vista generar acta
+const GenerarActa = () => import('@/views/ImprimirActa.vue')
 Vue.use(Router)
 
 export default new Router({
@@ -87,7 +90,12 @@ export default new Router({
           path: 'resultados',
           name: 'Resultados',
           component: SegundaFase
-        }, 
+        },
+        {
+          path: 'generar_acta',
+          name: 'Generar Acta',
+          component: GenerarActa
+        }
       ]
     },
     {

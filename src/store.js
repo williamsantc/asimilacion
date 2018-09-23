@@ -9,6 +9,10 @@ const getDefaultState = () => {
     documento: '',
     logged: false,
     userLogged: null,
+    dataFinal: {
+      2018: null,
+      2006: null
+    },
     pensum2006: [
       [
         { codigo: 156001, asignatura: 'BIOLOGÍA GENERAL', calificacion: '', creditos:  4 },
@@ -142,7 +146,7 @@ const getDefaultState = () => {
         { codigo: 18, asignatura: 'REDES', calificacion: '', creditos: 4, asim: 167257},
         { codigo: 28, asignatura: 'TEORÍA DE LA COMPUTACIÓN', calificacion: '', creditos: 3, asim: 167270},
         { codigo: 34, asignatura: 'PARADIGMAS DE PROGRAMACIÓN', calificacion: '', creditos: 3, asim: 167248},
-        { codigo: 37, asignatura: 'PROYECTO INVESTIGADOR', calificacion: '', creditos: 2, asim: 167328}
+        { codigo: 37, asignatura: 'PROYECTO INTEGRADOR', calificacion: '', creditos: 2, asim: 167328}
       ],
       [
         { codigo: 35, asignatura: 'FUNDAMENTOS DE COMPUTACIÓN PARALELA Y DISTRIBUIDA', calificacion: '', creditos: 3, asim: 167233},
@@ -171,6 +175,10 @@ export default new Vuex.Store({
     // TODO: Add state
     libreEleccion: 17,
     documento: '',
+    dataFinal: {
+      2018: null,
+      2006: null
+    },
     logged: false,
     userLogged: null,
     pensum2006: [
@@ -306,7 +314,7 @@ export default new Vuex.Store({
         { codigo: 18, asignatura: 'REDES', calificacion: '', creditos: 4, asim: 167257},
         { codigo: 28, asignatura: 'TEORÍA DE LA COMPUTACIÓN', calificacion: '', creditos: 3, asim: 167270},
         { codigo: 34, asignatura: 'PARADIGMAS DE PROGRAMACIÓN', calificacion: '', creditos: 3, asim: 167248},
-        { codigo: 37, asignatura: 'PROYECTO INVESTIGADOR', calificacion: '', creditos: 2, asim: 167328}
+        { codigo: 37, asignatura: 'PROYECTO INTEGRADOR', calificacion: '', creditos: 2, asim: 167328}
       ],
       [
         { codigo: 35, asignatura: 'FUNDAMENTOS DE COMPUTACIÓN PARALELA Y DISTRIBUIDA', calificacion: '', creditos: 3, asim: 167233},
@@ -335,7 +343,8 @@ export default new Vuex.Store({
     libreEleccion: state => state.libreEleccion,
     documento: state => state.documento,
     logged: state => state.logged,
-    userLogged: state => state.userLogged
+    userLogged: state => state.userLogged,
+    dataFinal: state => state.dataFinal
   },
   mutations: {
     // TODO: Add mutations

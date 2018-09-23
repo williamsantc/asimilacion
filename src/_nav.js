@@ -4,6 +4,11 @@ export default {
       name: 'Ingreso Notas',
       url: '/ingreso_notas',
       icon: 'icon-speedometer'
+    },
+    {
+      name: 'Imprimir Acta',
+      url: '/generar_acta',
+      icon: 'icon-pencil'
     }
     /*
     {

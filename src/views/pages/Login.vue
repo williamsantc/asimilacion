@@ -116,6 +116,7 @@ export default {
       
   },
   created: function () {
+    /*
     let sum = 0
     db.collection('users').get()
       .then((snapshot) => {
@@ -130,6 +131,7 @@ export default {
         console.log(sum)
       })
       
+      */
     if(this.$store.getters.userLogged) {
       this.$router.push('/ingreso_notas')
     }
