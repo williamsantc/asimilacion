@@ -7,6 +7,7 @@ const getDefaultState = () => {
   return {
     libreEleccion: 17,
     documento: '',
+    listaLibreEleccion: [],
     logged: false,
     userLogged: null,
     dataFinal: {
@@ -36,7 +37,7 @@ const getDefaultState = () => {
         { codigo: 157007, asignatura: 'CÁLCULO MULTIVARIABLE', calificacion: '', creditos:  4 },
         { codigo: 157009, asignatura: 'ELECTROMAGNETISMO', calificacion: '', creditos:  4 },
         { codigo: 167231, asignatura: 'ESTRUCTURAS DE DATOS DINÁMICOS Y ALGORITMOS', calificacion: '', creditos:  3 },
-        { codigo: 157014, asignatura: ' LABORATORIO DE ELECTROMAGNETISMO', calificacion: '', creditos:  1 }
+        { codigo: 157014, asignatura: 'LABORATORIO DE ELECTROMAGNETISMO', calificacion: '', creditos:  1 }
       ],
       [
         { codigo: 167201, asignatura: 'ANÁLISIS DE ALGORITMOS', calificacion: '', creditos:  3 },
@@ -175,6 +176,7 @@ export default new Vuex.Store({
     // TODO: Add state
     libreEleccion: 17,
     documento: '',
+    listaLibreEleccion: [],
     dataFinal: {
       2018: null,
       2006: null
@@ -204,7 +206,7 @@ export default new Vuex.Store({
         { codigo: 157007, asignatura: 'CÁLCULO MULTIVARIABLE', calificacion: '', creditos:  4 },
         { codigo: 157009, asignatura: 'ELECTROMAGNETISMO', calificacion: '', creditos:  4 },
         { codigo: 167231, asignatura: 'ESTRUCTURAS DE DATOS DINÁMICOS Y ALGORITMOS', calificacion: '', creditos:  3 },
-        { codigo: 157014, asignatura: ' LABORATORIO DE ELECTROMAGNETISMO', calificacion: '', creditos:  1 }
+        { codigo: 157014, asignatura: 'LABORATORIO DE ELECTROMAGNETISMO', calificacion: '', creditos:  1 }
       ],
       [
         { codigo: 167201, asignatura: 'ANÁLISIS DE ALGORITMOS', calificacion: '', creditos:  3 },
@@ -344,7 +346,8 @@ export default new Vuex.Store({
     documento: state => state.documento,
     logged: state => state.logged,
     userLogged: state => state.userLogged,
-    dataFinal: state => state.dataFinal
+    dataFinal: state => state.dataFinal,
+    listaLibreEleccion: state => state.listaLibreEleccion
   },
   mutations: {
     // TODO: Add mutations
@@ -362,6 +365,9 @@ export default new Vuex.Store({
     },
     OLD_USER: function (state, item) {
       state.userLogged = item
+    },
+    LOAD_LIBRE: function(state, item) {
+      state.listaLibreEleccion = item
     }
   },
   actions: {
@@ -380,6 +386,9 @@ export default new Vuex.Store({
     },
     usuarioAntiguo: function (context, item) {
       context.commit('OLD_USER', item)
+    },
+    cargarLibreEleccion: function (context, item) {
+      context.commit('LOAD_LIBRE', item)
     }
   },
 })

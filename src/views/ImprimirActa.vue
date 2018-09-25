@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     generarActa: function () {
-      console.log(this.$store.getters.dataFinal)
+      this.nombreCompleto = this.nombreCompleto.trim()
       if(!this.nombreCompleto) {
         this.$toastr.error('Debe ingresar su nombre', 'Campo incompleto')
         return
@@ -50,7 +50,7 @@ export default {
         ' intención de asimilación está sujeta a que en el eventual proceso de asimilación no se consideren las notas de las '+
         'asignaturas pérdidas.</p>'+ 
         '<p style="line-height: 1.25;">De acuerdo con mi historial académico consignado en el registro extendido, mi proceso '+
-        'de asimilación arrojaría el siguiente resumen: </p> '
+        'de asimilación sería el siguiente: </p> '
       
       let specialElementHandlers = {
         '#editor': function(element, renderer){
@@ -63,12 +63,53 @@ export default {
       pdf.setFontSize(16)
       pdf.setFontType("bold")
       pdf.setFont("times")
-      pdf.text(105, 45, 'Acta de intención', null, null, 'center')
+      pdf.text(105, 20, 'Acta de intención', null, null, 'center')
       pdf.setFontSize(12)
-      pdf.fromHTML( first, 20, 50, {
+      pdf.fromHTML( first, 20, 25, {
         'width': 180, 
         'elementHandlers': specialElementHandlers
       })
+      
+      // pdf.addPage()
+      let rowsCalificaciones = [
+        { title: 'Asignatura 2006' , dataKey: 'asig2006' },
+        { title: 'Asignatura 2019', dataKey: 'asig2018' },
+        { title: 'Créditos', dataKey: 'creditos' },
+        { title: 'Calificación', dataKey: 'calif' }
+      ]
+      let val = 104.5
+      let Asignaturas = this.generarAsignaturasParaActa()
+      for (let pos in Asignaturas) {
+        if(val < 266) {
+          val += 7.5
+        } else {
+          val = 20
+        }
+      }
+      
+      pdf.autoTable(rowsCalificaciones, Asignaturas, {startY: 100, theme: 'plain', 
+      styles: {
+            font: 'times',
+            fontSize: 8.5
+        }
+      })
+      pdf.setFontSize(8)
+      pdf.setFontType("normal")
+      let pageCount = pdf.internal.getNumberOfPages()
+      for(let i = 0; i < pageCount; i++) { 
+        pdf.setPage(i)
+        pdf.text(185,270,'Página ' + pdf.internal.getCurrentPageInfo().pageNumber + " de " + pageCount)
+      }
+      pdf.setPage(pageCount)
+      // console.log(val)
+      pdf.setFontSize(12)
+      pdf.setFontType("bold")
+      if(val > 170) {
+        pdf.addPage()
+        val = 20
+      } else {
+        val += 10
+      }
       let columns = [
         { title: 'Pensum' , dataKey: 'pensum' },
         { title: 'Promedio Acumulado', dataKey: 'prom' },
@@ -93,15 +134,16 @@ export default {
         }
       ]
       pdf.setFont("times")
-      pdf.autoTable(columns, rows, {startY: 130, theme: 'plain', columnStyles: {
-              pensum: {
-                  fontStyle: 'bold'
-              }
-          }, styles: {
-              font: 'times',
-              fontSize: 12
-          }})
-      
+      pdf.text(20, val, 'Resumen final:')
+      pdf.autoTable(columns, rows, {startY: val + 5, theme: 'plain', columnStyles: {
+          pensum: {
+              fontStyle: 'bold'
+          }
+        }, styles: {
+            font: 'times',
+            fontSize: 12
+        }
+      })
       pdf.setFontType("bold")
       let meses = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
@@ -110,22 +152,54 @@ export default {
       let d = new Date()
       pdf.setFontSize(12)
       pdf.setFontType("normal")
-      pdf.text(20,165, 'Para ver en detalle el proceso de asimilación, revisar páginas anexas.')
-      pdf.text(200, 180, '____________________________________', null, null, 'right')
-      pdf.setFontType("normal")
-      pdf.text(200, 185, this.nombreCompleto, null, null, 'right')
-      pdf.text(200, 190, 'Est. de Ing. de Sistemas', null, null, 'right')
-      pdf.text(200, 195, 'Documento: ' + this.$store.getters.userLogged.documento, null, null, 'right')
+      pdf.text(200, val + 55, this.nombreCompleto, null, null, 'right')
+      pdf.text(200, val + 60, 'Est. de Ing. de Sistemas', null, null, 'right')
+      pdf.text(200, val + 65, 'Documento: ' + this.$store.getters.userLogged.documento, null, null, 'right')
       pdf.setFontType("bold")
       pdf.setFontSize(14)
-      pdf.text(20, 200, 'Pamplona, ' + d.getDate() + ' de ' + meses[d.getMonth()] + ' de ' + d.getFullYear())
+      pdf.text(20, val + 70, 'Pamplona, ' + d.getDate() + ' de ' + meses[d.getMonth()] + ' de ' + d.getFullYear())
       pdf.save('acta_' + this.$store.getters.userLogged.documento + '.pdf')
-      this.$store.dispatch('cerrarSesion')
       this.$toastr.success('Proceda a firmarla y entregarla', 'Acta generada')
-      this.$router.push('/pages/login')
+    },
+    generarAsignaturasParaActa: function () {
+      let listaAsignaturas = []
+      for (let periodo2018 in this.$store.getters.pensum2018) {
+        for (let asig2018 in this.$store.getters.pensum2018[periodo2018]) {
+          for (let periodo2006 in this.$store.getters.pensum2006) {
+            for (let asig2006 in this.$store.getters.pensum2006[periodo2006]) {
+              if (this.$store.getters.pensum2018[periodo2018][asig2018].asim 
+                  === this.$store.getters.pensum2006[periodo2006][asig2006].codigo 
+                  && this.$store.getters.pensum2018[periodo2018][asig2018].calificacion) {
+                    
+                      listaAsignaturas.push({
+                      asig2006: this.$store.getters.pensum2006[periodo2006][asig2006].asignatura,
+                      asig2018: this.$store.getters.pensum2018[periodo2018][asig2018].asignatura,
+                      creditos: this.$store.getters.pensum2018[periodo2018][asig2018].creditos,
+                      calif: this.$store.getters.pensum2018[periodo2018][asig2018].calificacion
+                    })
+                  }
+            }
+          }
+        }
+      }
+
+      for (let i in this.$store.getters.listaLibreEleccion) {
+        listaAsignaturas.push({
+          asig2006: this.$store.getters.listaLibreEleccion[i].asignatura,
+          asig2018: 'LIBRE ELECCIÓN',
+          creditos: this.$store.getters.listaLibreEleccion[i].creditos,
+          calif: this.$store.getters.listaLibreEleccion[i].calificacion
+        })
+      }
+      return listaAsignaturas
     }
   },
   beforeCreate: function () {
+    if (!this.$store.getters.logged) {
+      this.$toastr.error('No se ha detectado sesión', 'Error en sesión')
+      this.$router.push('/pages/login')
+      return
+    }
     if (!this.$store.getters.userLogged.documento) {
       this.$toastr.error('Aún no ha finalizado su registro', 'Registro incompleto')
       this.$router.push('ingreso_notas')

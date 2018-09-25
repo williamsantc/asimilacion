@@ -46,7 +46,7 @@
       </b-col>
       <b-col md="6">
         <b-card>
-          <h4 slot="header">Datos Pensum 2018</h4>
+          <h4 slot="header">Datos Pensum 2019</h4>
           <b-row class="justify-content-md-center">
             <b-col sm="4">
               <b-form-group label="Ubicación semestral">
@@ -120,7 +120,7 @@
       </b-col>
       <b-col md="6">
         <b-card>
-          <h4 slot="header">Calificaciones pensum 2018</h4>
+          <h4 slot="header">Calificaciones pensum 2019</h4>
           <template v-for="(item, index) in $store.getters.pensum2018">
             <div :key="index">
               <h6>Periodo {{index + 1}}</h6>
@@ -390,8 +390,17 @@ export default {
       this.$router.push('/pages/login')
     }
   },
+  watch: {
+    libreEleccion: {
+      handler: function (value) {
+        this.$store.dispatch('cargarLibreEleccion', value)
+      },
+      deep: true
+    }
+  },
   beforeCreate: function () {
     if (!this.$store.getters.logged) {
+      this.$toastr.error('No se ha detectado sesión', 'Error en sesión')
       this.$router.push('/pages/login')
     }
   },

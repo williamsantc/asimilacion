@@ -136,6 +136,7 @@ export default {
   beforeCreate: function () {
     this.$store.dispatch('changeLibre', 17)
     if (!this.$store.getters.logged) {
+      this.$toastr.error('No se ha detectado sesión', 'Error en sesión')
       this.$router.push('/pages/login')
       return
     }
