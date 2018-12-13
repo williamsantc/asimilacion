@@ -24,12 +24,7 @@ window.toastr = require('toastr')
 Vue.use(VueToastr2)
 
 let config = {
-  apiKey: "AIzaSyAYQTRy-m2YwR3Azh3tOCM9wMZbyYe1dxM",
-  authDomain: "asimilacion-2e1a4.firebaseapp.com",
-  databaseURL: "https://asimilacion-2e1a4.firebaseio.com",
-  projectId: "asimilacion-2e1a4",
-  storageBucket: "asimilacion-2e1a4.appspot.com",
-  messagingSenderId: "272143747956"
+  
 }
 firebase.initializeApp(config)
 firebase.firestore().settings( { timestampsInSnapshots: true })
